@@ -10,67 +10,108 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         body {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             background: linear-gradient(135deg, #667eea, #764ba2);
+            overflow: hidden;
         }
         .container {
             position: relative;
-            width: 350px;
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            width: 380px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
             text-align: center;
             overflow: hidden;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         h2 {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            color: #333;
+            font-size: 2em;
         }
         .input-box {
             position: relative;
-            margin: 10px 0;
+            margin: 20px 0;
+        }
+        .input-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #764ba2;
+            transition: 0.3s;
         }
         .input-box input {
             width: 100%;
-            padding: 10px;
+            padding: 12px 20px 12px 45px;
             border: none;
-            border-bottom: 2px solid #764ba2;
+            border-bottom: 2px solid #ddd;
             outline: none;
             font-size: 16px;
+            transition: 0.3s;
+            background: transparent;
+        }
+        .input-box input:focus,
+        .input-box input:valid {
+            border-bottom-color: #667eea;
+        }
+        .input-box input:focus ~ i {
+            color: #667eea;
+            transform: translateY(-50%) scale(1.2);
         }
         .toggle {
             cursor: pointer;
-            color: #667eea;
-            margin-top: 15px;
+            color: #666;
+            margin-top: 20px;
             display: block;
+            transition: 0.3s;
+        }
+        .toggle:hover {
+            color: #667eea;
+            text-decoration: underline;
         }
         .btn {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             background: #667eea;
             color: #fff;
             border: none;
             cursor: pointer;
-            border-radius: 5px;
-            transition: 0.3s;
+            border-radius: 8px;
+            transition: all 0.4s ease;
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-top: 15px;
         }
         .btn:hover {
             background: #5649a4;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
         .forms {
             display: flex;
             width: 200%;
-            transition: transform 0.5s ease-in-out;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .form-container {
             width: 50%;
-            padding: 20px;
+            padding: 10px;
         }
         .form-wrapper {
             width: 100%;
@@ -79,6 +120,38 @@
         .move {
             transform: translateX(-50%);
         }
+        .background-circles {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            z-index: -1;
+        }
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #667eea33, #764ba233);
+            animation: float 20s infinite linear;
+            filter: blur(40px);
+        }
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 0.4;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(50vw) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        .shake {
+            animation: shake 0.4s ease;
+        }
     </style>
 </head>
 <body>
@@ -86,35 +159,64 @@
         <div class="form-wrapper">
             <div class="forms" id="forms">
                 <div class="form-container" id="login-form">
-                    <h2>Login</h2>
+                    <h2>Welcome Back</h2>
                     <div class="input-box">
-                        <input type="text" id="login-username" placeholder="Username" required>
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="login-username" required>
+                        <label for="login-username">Username</label>
                     </div>
                     <div class="input-box">
-                        <input type="password" id="login-password" placeholder="Password" required>
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="login-password" required>
+                        <label for="login-password">Password</label>
                     </div>
-                    <button class="btn">Login</button>
-                    <span class="toggle" onclick="toggleForms()">Don't have an account? Sign up</span>
+                    <button class="btn">Continue</button>
+                    <span class="toggle" onclick="toggleForms()">New here? Create Account</span>
                 </div>
                 <div class="form-container" id="signup-form">
-                    <h2>Sign Up</h2>
+                    <h2>Get Started</h2>
                     <div class="input-box">
-                        <input type="text" id="signup-username" placeholder="Username" required>
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="signup-username" required>
+                        <label for="signup-username">Username</label>
                     </div>
                     <div class="input-box">
-                        <input type="email" id="signup-email" placeholder="Email" required>
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="signup-email" required>
+                        <label for="signup-email">Email</label>
                     </div>
                     <div class="input-box">
-                        <input type="password" id="signup-password" placeholder="Password" required>
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="signup-password" required>
+                        <label for="signup-password">Password</label>
                     </div>
-                    <button class="btn" onclick="signup()">Sign Up</button>
-                    <span class="toggle" onclick="toggleForms()">Already have an account? Login</span>
+                    <button class="btn" onclick="signup()">Create Account</button>
+                    <span class="toggle" onclick="toggleForms()">Already have an account? Sign In</span>
                 </div>
             </div>
         </div>
     </div>
-    
+
     <script>
+        // Create animated background circles
+        document.addEventListener('DOMContentLoaded', function() {
+            const backgroundCircles = document.createElement('div');
+            backgroundCircles.className = 'background-circles';
+            for (let i = 0; i < 5; i++) {
+                const circle = document.createElement('div');
+                circle.className = 'circle';
+                const size = Math.random() * 200 + 50;
+                const left = Math.random() * 100;
+                const delay = Math.random() * 10;
+                circle.style.width = size + 'px';
+                circle.style.height = size + 'px';
+                circle.style.left = left + '%';
+                circle.style.animationDelay = delay + 's';
+                backgroundCircles.appendChild(circle);
+            }
+            document.body.appendChild(backgroundCircles);
+        });
+
         function toggleForms() {
             document.getElementById('forms').classList.toggle('move');
         }
@@ -124,13 +226,54 @@
             let email = document.getElementById("signup-email").value.trim();
             let password = document.getElementById("signup-password").value.trim();
             
-            if (username !== "" && email !== "" && password !== "") {
-                alert("Sign-up successful! Please log in.");
+            const inputs = [
+                { element: 'signup-username', value: username },
+                { element: 'signup-email', value: email },
+                { element: 'signup-password', value: password }
+            ];
+
+            let isValid = true;
+            inputs.forEach(input => {
+                const field = document.getElementById(input.element);
+                if (input.value === "") {
+                    field.style.borderBottomColor = '#ff4757';
+                    isValid = false;
+                } else {
+                    field.style.borderBottomColor = '#764ba2';
+                }
+            });
+
+            if (isValid) {
+                alert("Account created successfully!");
                 toggleForms();
             } else {
-                alert("Please fill in all fields before signing up.");
+                document.getElementById('signup-form').classList.add('shake');
+                setTimeout(() => {
+                    document.getElementById('signup-form').classList.remove('shake');
+                }, 400);
             }
         }
+
+        // Add input event listeners for error reset
+        document.querySelectorAll('.form-container input').forEach(input => {
+            input.addEventListener('input', function() {
+                this.style.borderBottomColor = '#764ba2';
+            });
+        });
+
+        // Floating labels functionality
+        document.querySelectorAll('.input-box input').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentNode.querySelector('label').style.top = '-5px';
+                this.parentNode.querySelector('label').style.fontSize = '12px';
+            });
+            input.addEventListener('blur', function() {
+                if (!this.value) {
+                    this.parentNode.querySelector('label').style.top = '10px';
+                    this.parentNode.querySelector('label').style.fontSize = '16px';
+                }
+            });
+        });
     </script>
 </body>
 </html>
